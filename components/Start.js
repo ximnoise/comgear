@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, KeyboardAvoidingView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 
@@ -30,7 +30,8 @@ const Start = ({ navigation }) => {
     },
     box: {
       width: '88%',
-      height: '44%',
+      height: 300,
+      bottom: 100,
       marginRight: 'auto',
       marginLeft: 'auto',
       backgroundColor: 'white',
@@ -117,7 +118,8 @@ const Start = ({ navigation }) => {
       textAlign: 'center'
     },
     footerContainer: {
-      height: 60,
+      height: 50,
+      top: -100
     },
     footerText: {
       marginTop: 10,
