@@ -20,7 +20,7 @@ const App = (props) => {
         <Stack.Screen
           name='Chat'
           component={Chat}
-          options={({ route }) => ({ title: route.params.name })}
+          options={({ route }) => ({ title: route.params.name, headerShown: false })}
         />
       </Stack.Navigator>
     </NavigationContainer>

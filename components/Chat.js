@@ -1,8 +1,10 @@
-import React from 'react';
-import { Component } from 'react';
-import { Platform } from 'react-native';
-import { StyleSheet, View, KeyboardAvoidingView, Image } from 'react-native';
-import { GiftedChat, Bubble, SystemMessage, MessageText, InputToolbar, Actions, Composer, Send } from 'react-native-gifted-chat';
+import React, { Component } from 'react';
+import { StyleSheet, Platform, View, KeyboardAvoidingView, Image, Text, Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { GiftedChat } from 'react-native-gifted-chat';
+
+import { renderBubble, renderMessageText, renderSystemMessage } from './MessageContainer';
+import { renderInputToolbar, renderComposer, renderSend, renderActions } from './InputToolbar';
 
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -44,7 +46,6 @@ class Chat extends Component {
       if (!user) {
         firebase.auth().signInAnonymously();
       }
-
 
       this.setState({
         user: {
@@ -109,165 +110,64 @@ class Chat extends Component {
     );
   }
 
-  renderBubble(props) {
-    return (
-      <Bubble
-        {...props}
-          wrapperStyle={{
-            left: {
-              borderBottomLeftRadius: 5,
-              backgroundColor: '#696969'
-            },
-            right: {
-              borderBottomRightRadius: 5,
-              backgroundColor: '#4ca3dd'
-            }
-          }}
-      />
-    )
-  }
-
-  renderMessageText(props) {
-    return (
-      <MessageText
-        {...props}
-        textStyle={{
-          left: {
-            color: '#fff'
-          },
-          right: {
-            color: '#000'
-          }
-        }}
-        linkStyle={{
-          left: {
-            color: '#ffff00'
-          },
-          right: {
-            color: '#003366'
-          }
-        }}
-        customTextStyle={{ fontSize: 18 }}
-      />
-    );
-  }
-
-  renderSystemMessage(props) {
-    return (
-      <SystemMessage
-        {...props}
-          textStyle={{
-            color: '#fff',
-            fontWeight: '700'
-          }}
-      />
-    );
-  }
-
-  renderInputToolbar(props) {
-    return (
-      <InputToolbar
-        {...props}
-        containerStyle={{
-          backgroundColor: '#000',
-        }}
-        primaryStyle={{ alignItems: 'center' }}
-      />
-    );
-  }
-
-  renderComposer(props) {
-    return (
-      <Composer
-        {...props}
-        textInputStyle={{
-          color: '#000',
-          backgroundColor: '#EDF1F7',
-          borderWidth: 1,
-          borderRadius: 20,
-          borderColor: '#E4E9F2',
-          paddingTop: 8.5,
-          paddingHorizontal: 12,
-          marginLeft: 0,
-          marginRight: 10
-        }}
-      />
-    );
-  }
-
-  renderSend(props) {
-    return (
-      <Send
-        {...props}
-        disabled={!props.text}
-        containerStyle={{
-          width: 44,
-          height: 44,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginHorizontal: 4,
-        }}
-      >
-        <Image
-          style={{ width: 32, height: 32 }}
-          source={require('../assets/send-icon-36px.png')}
-        />
-      </Send>
-    );
-  }
-
-  renderActions(props) {
-    return (
-      <Actions
-        {...props}
-        containerStyle={{
-          width: 44,
-          height: 44,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginLeft: 4,
-          marginRight: 4,
-          marginBottom: 0,
-        }}
-        icon={() => (
-          <Image
-            style={{ width: 32, height: 32 }}
-            source={require('../assets/more-icon-36px.png')}
-          />
-        )}
-        options={{
-          'Choose From Library': () => {
-            console.log('Choose From Library');
-          },
-          Cancel: () => {
-            console.log('Cancel');
-          },
-        }}
-        optionTintColor="#000"
-      />
-    );
-  }
-
   render() {
     const color = this.props.route.params.bgColor;
     const { name } = this.props.route.params;
+    const { navigate } = this.props.navigation;
+
     const styles = StyleSheet.create({
       container: {
         flex: 1,
         backgroundColor: color,
       },
+      box: {
+        flexDirection: 'row',
+        height: 100,
+        backgroundColor: '#474056',
+        borderColor: '#000',
+        borderBottomWidth: 1,
+      },
+      nameText: {
+        top: 55,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#fff'
+      },
+      userAvatar: {
+        top: 50,
+        right: 20
+      },
+      backBtn: {
+        top: 50,
+        left: 20
+      },
+      bottomColorOverride: {
+        backgroundColor: '#474056',
+        height: 35
+      }
     });
 
     return (
       <View style={styles.container}>
+        <View style={styles.box}>
+          <TouchableOpacity style={styles.backBtn} onPress={() => navigate('Start')}>
+            <Image source={require('../assets/back-icon-36px.png')} />
+          </TouchableOpacity>
+          <Text style={styles.nameText}>{name}</Text>
+          <TouchableOpacity style={styles.userAvatar} onPress={() => Alert.alert('Please add a photo')}>
+            <Image source={require('../assets/add-photo-icon-36px.png')} />
+          </TouchableOpacity>
+        </View>
         <GiftedChat
-          renderBubble={this.renderBubble.bind(this)}
-          renderSystemMessage={this.renderSystemMessage.bind(this)}
-          renderMessageText={this.renderMessageText.bind(this)}
-          renderInputToolbar={this.renderInputToolbar.bind(this)}
-          renderComposer={this.renderComposer.bind(this)}
-          renderActions={this.renderActions.bind(this)}
-          renderSend={this.renderSend.bind(this)}
+          renderBubble={renderBubble}
+          renderSystemMessage={renderSystemMessage}
+          renderMessageText={renderMessageText}
+          renderInputToolbar={renderInputToolbar}
+          renderComposer={renderComposer}
+          renderActions={renderActions}
+          renderSend={renderSend}
           renderUsernameOnMessage
           showUserAvatar
           messages={this.state.messages}
@@ -283,6 +183,7 @@ class Chat extends Component {
             <KeyboardAvoidingView behavior='height' />
           ) : null
         }
+        <View style={styles.bottomColorOverride}></View>
       </View>
     );
   }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 
-const image = require('../assets/background-image.png')
+const image = require('../assets/bg-image.jpg')
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -20,7 +20,7 @@ const Start = ({ navigation }) => {
       justifyContent: 'space-between',
     },
     appTitle: {
-      top: 80,
+      top: 100,
       height: '50%',
       fontSize: 45,
       fontWeight: 600,
@@ -35,7 +35,8 @@ const Start = ({ navigation }) => {
       marginRight: 'auto',
       marginLeft: 'auto',
       backgroundColor: 'white',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      borderRadius: 10
     },
     userNameContainer: {
       flexDirection: 'row',
@@ -138,8 +139,8 @@ const Start = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground source={image} style={styles.image}>
-      <Text style={styles.appTitle}>ComGear</Text>
+    <ImageBackground source={require('../assets/bg-image.jpg')} style={styles.image}>
+      <Text style={styles.appTitle}>Comgear</Text>
       <View style={styles.box}>
         <View style={styles.userNameContainer}>
           <Icon
@@ -196,4 +197,4 @@ const Start = ({ navigation }) => {
 
 export default Start;
 
-
+// <Text style={styles.appTitle}>Comgear</Text>
