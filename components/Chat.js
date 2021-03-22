@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Platform, View, KeyboardAvoidingView, Image, Text, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import MapView from 'react-native-maps';
+
 
 import { renderBubble, renderMessageText, renderSystemMessage } from './MessageContainer';
-import { renderInputToolbar, renderComposer, renderSend, renderActions } from './InputToolbar';
+import { renderInputToolbar, renderComposer, renderSend } from './InputToolbar';
+import CustomActions from './CustomActions';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from '@react-native-community/netinfo';
@@ -24,6 +27,8 @@ class Chat extends Component {
         avatar: '',
       },
       isConnected: false,
+      image: null,
+      location: null
     };
 
     const firebaseConfig = {
@@ -111,7 +116,9 @@ class Chat extends Component {
           _id: data.user._id,
           name: data.user.name,
           avatar: data.user.avatar
-        }
+        },
+        image: data.image || '',
+        location: data.location || null
       });
     });
     this.setState({ messages });
@@ -156,9 +163,12 @@ class Chat extends Component {
     const message = this.state.messages[0];
     this.referenceChatMessages.add({
       _id: message._id,
+      uid: this.state.uid,
       createdAt: message.createdAt,
-      text: message.text || null,
-      user: message.user
+      text: message.text || '',
+      user: message.user,
+      image: message.image || '',
+      location: message.location || null
     });
   }
 
@@ -169,6 +179,26 @@ class Chat extends Component {
       this.addMessage();
       this.saveMessage();
     });
+  }
+
+  renderCustomActions = (props) => <CustomActions {...props} />;
+
+  renderCustomView(props) {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null;
   }
 
   render() {
@@ -227,7 +257,8 @@ class Chat extends Component {
           renderMessageText={renderMessageText}
           renderInputToolbar={renderInputToolbar}
           renderComposer={renderComposer}
-          renderActions={renderActions}
+          renderActions={this.renderCustomActions}
+          renderCustomView={this.renderCustomView}
           renderSend={renderSend}
           placeholder={this.state.isConnected ? 'Type a message...' : 'No internet connection'}
           maxInputLength={this.state.isConnected ? 1000 : 0}
