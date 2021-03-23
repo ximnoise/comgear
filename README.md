@@ -70,3 +70,4 @@ With the command line interface open after using the "expo start" command, press
 - [Expo](https://expo.io)
 - [Google Firestore](https://firebase.google.com)
 - [Gifted Chat](https://github.com/FaridSafi/react-native-gifted-chat)
+- [Android Studio](https://developer.android.com/studio)
