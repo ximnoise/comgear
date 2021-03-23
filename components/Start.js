@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, Image } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ImageBackground, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 
-const image = require('../assets/bg-image.jpg')
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -128,6 +127,7 @@ const Start = ({ navigation }) => {
     },
   });
 
+  // Event Handler (when user clicks 'Start Chatting')
   const onPressChat = (name, bgColor) => {
     if (name === '') {
       return Alert.alert('Please enter your name to continue.');
@@ -139,7 +139,7 @@ const Start = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground source={require('../assets/bg-image.jpg')} style={styles.image}>
+    <ImageBackground source={require('../assets/image/bg-image.jpg')} style={styles.image}>
       <Text style={styles.appTitle}>Comgear</Text>
       <View style={styles.box}>
         <View style={styles.userNameContainer}>
@@ -196,5 +196,3 @@ const Start = ({ navigation }) => {
 };
 
 export default Start;
-
-// <Text style={styles.appTitle}>Comgear</Text>

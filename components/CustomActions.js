@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -168,7 +168,7 @@ export default class CustomActions extends React.Component {
         <View>
           <Image
             style={{ width: 36, height: 36 }}
-            source={require('../assets/more-icon-36px.png')}
+            source={require('../assets/image/more-icon-36px.png')}
           />
         </View>
       </TouchableOpacity>

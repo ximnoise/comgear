@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Platform, View, KeyboardAvoidingView, Image, Text, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { GiftedChat } from 'react-native-gifted-chat';
 import MapView from 'react-native-maps';
 
 
@@ -41,6 +41,7 @@ class Chat extends Component {
       measurementId: "G-JE88LWBXJK"
     };
 
+    // Connect to Firebase
     if(!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -183,6 +184,7 @@ class Chat extends Component {
 
   renderCustomActions = (props) => <CustomActions {...props} />;
 
+  // Returns a MapView that shows user's location
   renderCustomView(props) {
     const { currentMessage } = props;
     if (currentMessage.location) {
@@ -244,11 +246,11 @@ class Chat extends Component {
       <View style={styles.container}>
         <View style={styles.box}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigate('Start')}>
-            <Image source={require('../assets/back-icon-36px.png')} />
+            <Image source={require('../assets/image/back-icon-36px.png')} />
           </TouchableOpacity>
           <Text style={styles.nameText}>{name}</Text>
           <TouchableOpacity style={styles.userAvatar} onPress={() => Alert.alert('Please add a photo')}>
-            <Image source={require('../assets/add-photo-icon-36px.png')} />
+            <Image source={require('../assets/image/add-photo-icon-36px.png')} />
           </TouchableOpacity>
         </View>
         <GiftedChat
